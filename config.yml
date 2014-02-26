@@ -1,0 +1,6 @@
+rCharts_vega:
+  jshead:
+    - ./js/d3.v3.js
+    - ./js/vega.js
+    - ./js/angular.js
+ 
