@@ -1,0 +1,336 @@
+<!doctype HTML>
+<meta charset = 'utf-8'>
+<html>
+  <head>
+    
+    <script src='C:\Users\Kent.TLEAVELL_NT\Dropbox\development\r\rCharts_vega/./js/d3.v3.js' type='text/javascript'></script>
+    <script src='C:\Users\Kent.TLEAVELL_NT\Dropbox\development\r\rCharts_vega/./js/vega.js' type='text/javascript'></script>
+    <script src='C:\Users\Kent.TLEAVELL_NT\Dropbox\development\r\rCharts_vega/./js/angular.js' type='text/javascript'></script>
+    
+    <style>
+    .rChart {
+      display: block;
+      margin-left: auto; 
+      margin-right: auto;
+      width: 800px;
+      height: 400px;
+    }  
+    </style>
+    
+  </head>
+  <body ng-app ng-controller='rChartsCtrl'>
+    
+    
+      <div class='container'>
+      <!--<input id='slider' type='range' min=1960 max=2010 ng-model='year' width=200>
+      <span ng-bind='year'></span>-->
+      <input type='range' ng-model='ctrls.mysize' min=1 max=10 />
+      <div id='vis' class='rChart datamaps'></div>  
+      </div>
+      <script>
+      var ctrls = {
+        'mysize': 2
+      }
+      // parse a spec and create a visualization view
+      function parse(spec) {
+        return vg.parse.spec(spec, function(chart){
+          chart({el:'#vis'}).update(); 
+        })
+      }
+    
+      function rChartsCtrl($scope){
+        $scope.ctrls = ctrls;
+        $scope.$watch('ctrls.mysize', function(linesize){
+          opts.spec.marks[0].marks[0].properties.update.strokeWidth = {'value': +linesize}
+          parse(opts.spec);
+        },true)
+      }
+      </script>    
+    <script>
+  var opts = {
+ "dom": "chart6a465cd3e42",
+"width":    800,
+"height":    400,
+"bodyattrs": "ng-app ng-controller='rChartsCtrl'",
+"spec": {
+ "data": [
+ {
+ "name": "mtcars_a63c70e73b58d0823ab3bcbd3b543d6f_split_b7c6bb50_bin_34e66ab4_tree",
+"format": {
+ "type": "treejson" 
+},
+"values": {
+ "children": [
+ {
+ "children": [
+ {
+ "cyl":      4,
+"x":     19,
+"count__":      0 
+},
+{
+ "cyl":      4,
+"x":     21,
+"count__":      2 
+},
+{
+ "cyl":      4,
+"x":     23,
+"count__":      2 
+},
+{
+ "cyl":      4,
+"x":     25,
+"count__":      1 
+},
+{
+ "cyl":      4,
+"x":     27,
+"count__":      2 
+},
+{
+ "cyl":      4,
+"x":     29,
+"count__":      0 
+},
+{
+ "cyl":      4,
+"x":     31,
+"count__":      2 
+},
+{
+ "cyl":      4,
+"x":     33,
+"count__":      2 
+},
+{
+ "cyl":      4,
+"x":     35,
+"count__":      0 
+} 
+] 
+},
+{
+ "children": [
+ {
+ "cyl":      6,
+"x":     15,
+"count__":      0 
+},
+{
+ "cyl":      6,
+"x":     17,
+"count__":      1 
+},
+{
+ "cyl":      6,
+"x":     19,
+"count__":      3 
+},
+{
+ "cyl":      6,
+"x":     21,
+"count__":      3 
+},
+{
+ "cyl":      6,
+"x":     23,
+"count__":      0 
+} 
+] 
+},
+{
+ "children": [
+ {
+ "cyl":      8,
+"x":      9,
+"count__":      0 
+},
+{
+ "cyl":      8,
+"x":     11,
+"count__":      2 
+},
+{
+ "cyl":      8,
+"x":     13,
+"count__":      1 
+},
+{
+ "cyl":      8,
+"x":     15,
+"count__":      7 
+},
+{
+ "cyl":      8,
+"x":     17,
+"count__":      2 
+},
+{
+ "cyl":      8,
+"x":     19,
+"count__":      2 
+},
+{
+ "cyl":      8,
+"x":     21,
+"count__":      0 
+} 
+] 
+} 
+] 
+} 
+},
+{
+ "name": "mtcars_a63c70e73b58d0823ab3bcbd3b543d6f_split_b7c6bb50_bin_34e66ab4",
+"source": "mtcars_a63c70e73b58d0823ab3bcbd3b543d6f_split_b7c6bb50_bin_34e66ab4_tree",
+"transform": [
+ {
+ "type": "flatten" 
+} 
+] 
+} 
+],
+"scales": [
+ {
+ "name": "stroke",
+"type": "linear",
+"reverse": false,
+"round": false,
+"clamp": false,
+"nice": true,
+"zero": false,
+"range": [ "#132B43", "#56B1F7" ],
+"domain": {
+ "fields": [
+ {
+ "data": "mtcars_a63c70e73b58d0823ab3bcbd3b543d6f_split_b7c6bb50_bin_34e66ab4",
+"field": "data.cyl" 
+} 
+] 
+} 
+},
+{
+ "name": "x",
+"type": "linear",
+"reverse": false,
+"round": false,
+"clamp": false,
+"nice": true,
+"zero": false,
+"range": "width",
+"domain": {
+ "fields": [
+ {
+ "data": "mtcars_a63c70e73b58d0823ab3bcbd3b543d6f_split_b7c6bb50_bin_34e66ab4",
+"field": "data.x" 
+} 
+] 
+} 
+},
+{
+ "name": "y",
+"type": "linear",
+"reverse": false,
+"round": false,
+"clamp": false,
+"nice": true,
+"zero": false,
+"range": "height",
+"domain": {
+ "fields": [
+ {
+ "data": "mtcars_a63c70e73b58d0823ab3bcbd3b543d6f_split_b7c6bb50_bin_34e66ab4",
+"field": "data.count__" 
+} 
+] 
+} 
+} 
+],
+"marks": [
+ {
+ "type": "group",
+"from": {
+ "data": "mtcars_a63c70e73b58d0823ab3bcbd3b543d6f_split_b7c6bb50_bin_34e66ab4_tree" 
+},
+"marks": [
+ {
+ "type": "line",
+"properties": {
+ "update": {
+ "stroke": {
+ "scale": "stroke",
+"field": "data.cyl" 
+},
+"strokeWidth": {
+ "value":      4 
+},
+"x": {
+ "scale": "x",
+"field": "data.x" 
+},
+"y": {
+ "scale": "y",
+"field": "data.count__" 
+} 
+},
+"ggvis": {
+ "data": {
+ "value": "mtcars_a63c70e73b58d0823ab3bcbd3b543d6f_split_b7c6bb50_bin_34e66ab4_tree" 
+} 
+} 
+} 
+} 
+] 
+} 
+],
+"width":    600,
+"height":    400,
+"legends": [
+ {
+ "stroke": "stroke",
+"orient": "right",
+"title": "cyl" 
+} 
+],
+"axes": [
+ {
+ "type": "x",
+"scale": "x",
+"orient": "bottom",
+"layer": "back",
+"grid": true,
+"title": "x" 
+},
+{
+ "type": "y",
+"scale": "y",
+"orient": "left",
+"layer": "back",
+"grid": true,
+"title": "count__" 
+} 
+],
+"padding": null,
+"ggvis_opts": {
+ "width":    600,
+"height":    400,
+"keep_aspect": false,
+"resizable": true,
+"padding": {},
+"duration":    250,
+"renderer": "svg",
+"hover_duration":      0 
+},
+"handlers": [] 
+},
+"id": "chart6a465cd3e42" 
+}
+</script>
+    
+    
+        <script>
+        </script>
+            
+  </body>
+</html>
