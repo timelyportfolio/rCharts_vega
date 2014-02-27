@@ -20,6 +20,9 @@
       <script type='text/javascript' src="http://slidify.github.io/ile/libraries/widgets/interactive/js/ace/js/ace.js"></script>
       <script type='text/javascript' src="http://angular-ui.github.io/ui-ace/dist/ui-ace.min.js"></script>
     <script type='text/javascript' src="//cdn.jsdelivr.net/lodash/2.4.1/lodash.js"></script>
+    <script type='text/javascript' src="./js/beautify.js"></script>
+    <script type='text/javascript' src="./js/d3.v3.js"></script>
+    <script type='text/javascript' src="./js/vega.js"></script>
 
 <style type='text/css'>
 #editor { 
@@ -30,7 +33,7 @@
   height: 95%;
 }
 
-#output { 
+#vis { 
   position: absolute;
   top: 40px;
   right: 0px;
@@ -92,13 +95,13 @@
         <div class="uk-grid">
   <div id='editor' ng-model='exampleCode' ui-ace="aceOptions">{{ exampleCode }}
   </div><br/>
-   <iframe id='output' seamless frameborder = "0"
-         allowTransparency = "true">
-   </iframe>
+   <div id='vis'>
+     
+   </div>
 
 <script type='text/javascript'>
 
-ocpu.seturl("//public.opencpu.org/ocpu/github/ramnathv/slidify/R")
+//ocpu.seturl("//public.opencpu.org/ocpu/github/ramnathv/slidify/R")
 
 
 var lodash = angular.module('lodash', []);
@@ -117,6 +120,13 @@ function getGist(id, callback){
 }
 
 
+// parse a spec and create a visualization view
+function parse(spec) {
+  return vg.parse.spec(spec, function(chart){
+    chart({el:'#vis'}).update(); 
+  })
+}
+
 
 myApp.controller('MainCtrl', function($scope, $http, $location){  
   $scope.n = function(){
@@ -126,33 +136,23 @@ myApp.controller('MainCtrl', function($scope, $http, $location){
   $scope.preview = true
   $http({
     method: 'get',
-    url: '/playground/examples/8070363.json'
+    url: './playground/examples/spec.json'
   }).success(function(result){
-    $scope.files = result.files
-    $scope.examples = JSON.parse($scope.files['examples.json'].content)
-    $scope.example = $scope.examples[$scope.n()]
-    $scope.exampleCode = $scope.files[$scope.example.file].content
+    $scope.files = ['spec.json']
+    $scope.examples = ['example1']
+    $scope.example = $scope.examples[0]//[$scope.n()]
+    $scope.exampleCode = js_beautify(JSON.stringify(result))
   })
   
    $scope.aceOptions = {
      theme: 'solarized_light',
-     mode: 'r',
+     mode: 'json',
      useWrapMode : true
    }
    
    $scope.slidifyText = function(){
      $("#download").hide()
-     var req = ocpu.call("slidify_text", {
-       text : $scope.exampleCode
-     }, function(session){
-        $("#output").attr('src', session.getFileURL("output.html"))
-        $scope.$apply(function(){
-         $scope.dnlink = session.getLoc() + "files/output.html"
-        })
-        $("#download").show()
-     }).fail(function(text){
-        alert("Error: " + req.responseText);
-     });
+     parse(JSON.parse($scope.exampleCode))
    }
    
    $scope.$watch('exampleCode', _.debounce(function(newCode){
