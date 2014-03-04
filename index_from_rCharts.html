@@ -1,0 +1,394 @@
+<!doctype HTML>
+<meta charset = 'utf-8'>
+<html>
+  <head>
+    <link rel='stylesheet' href='./libraries/frameworks/uikit/css/uikit.min.css'>
+    <link rel='stylesheet' href='./libraries/frameworks/uikit/css/docs.css'>
+    <link rel='stylesheet' href='./css/googleopensans.css'>
+    <link rel='stylesheet' href='./libraries/frameworks/uikit/css/index.css'>
+    <link rel='stylesheet' href='./libraries/frameworks/uikit/css/jumbotron.css'>
+    <link rel='stylesheet' href='./libraries/highlighters/highlight.js/css/solarized_dark.css'>
+    <link rel='stylesheet' href='./css/local.css'>
+    
+    <script src='./js/jquery.min.js' type='text/javascript'></script>
+    <script src='./libraries/frameworks/uikit/js/uikit.min.js' type='text/javascript'></script>
+    <script src='./js/angular.min.js' type='text/javascript'></script>
+    <script src='./js/ace.js' type='text/javascript'></script>
+    <script src='./js/ui-ace.min.js' type='text/javascript'></script>
+    <script src='./js/lodash.js' type='text/javascript'></script>
+    <script src='./js/beautify.js' type='text/javascript'></script>
+    <script src='./js/d3.v3.js' type='text/javascript'></script>
+    <script src='./js/vega.js' type='text/javascript'></script>
+    
+    <style>
+    .rChart {
+      display: block;
+      margin-left: auto; 
+      margin-right: auto;
+      width: 800px;
+      height: 400px;
+    }  
+    </style>
+    
+  </head>
+  <body ng-app='myApp' ng-controller='MainCtrl'>
+    
+    <div></div>    
+        <nav class="uk-navbar">
+      <ul class="uk-navbar-nav">
+     <li>
+      <!--a href="/index.html"-->
+         
+        <i class='uk-icon-home'> </i>Home
+      <!--/a-->
+    </li>
+    <li>
+         <button href="#" class='uk-button uk-button-danger' 
+          style='margin-left:5px; margin-top:5px; margin-right:5px;' ng-click='parseSpec()'>
+           Submit
+          </button>
+    </li>
+    <li>
+      <div class='uk-button uk-button-success' 
+        style='margin-left:5px; margin-top:5px; margin-right:5px;'>
+      Instant Preview
+      <input id="checkSlave" type="checkbox" ng-model="preview">
+     </div>
+    </li>
+  </ul>
+    </nav>
+        <div class="uk-grid">
+  <div id='editor' ng-model='exampleCode' ui-ace="aceOptions">
+  </div><br/>
+   <div id='vis'>
+     
+   </div>
+   
+   <script>
+    var lodash = angular.module('lodash', []);
+    lodash.factory('_', function () {
+      return window._;
+      });
+    
+    var params = {
+ "dom": "chart2acc54d075ce",
+"width":    800,
+"height":    400,
+"bodyattrs": "ng-app='myApp' ng-controller='MainCtrl'",
+"spec": {
+ "data": [
+ {
+ "name": "mtcars_a63c70e73b58d0823ab3bcbd3b543d6f_split_b7c6bb50_bin_34e66ab4_tree",
+"format": {
+ "type": "treejson" 
+},
+"values": {
+ "children": [
+ {
+ "children": [
+ {
+ "cyl":      4,
+"x":     19,
+"count__":      0 
+},
+{
+ "cyl":      4,
+"x":     21,
+"count__":      2 
+},
+{
+ "cyl":      4,
+"x":     23,
+"count__":      2 
+},
+{
+ "cyl":      4,
+"x":     25,
+"count__":      1 
+},
+{
+ "cyl":      4,
+"x":     27,
+"count__":      2 
+},
+{
+ "cyl":      4,
+"x":     29,
+"count__":      0 
+},
+{
+ "cyl":      4,
+"x":     31,
+"count__":      2 
+},
+{
+ "cyl":      4,
+"x":     33,
+"count__":      2 
+},
+{
+ "cyl":      4,
+"x":     35,
+"count__":      0 
+} 
+] 
+},
+{
+ "children": [
+ {
+ "cyl":      6,
+"x":     15,
+"count__":      0 
+},
+{
+ "cyl":      6,
+"x":     17,
+"count__":      1 
+},
+{
+ "cyl":      6,
+"x":     19,
+"count__":      3 
+},
+{
+ "cyl":      6,
+"x":     21,
+"count__":      3 
+},
+{
+ "cyl":      6,
+"x":     23,
+"count__":      0 
+} 
+] 
+},
+{
+ "children": [
+ {
+ "cyl":      8,
+"x":      9,
+"count__":      0 
+},
+{
+ "cyl":      8,
+"x":     11,
+"count__":      2 
+},
+{
+ "cyl":      8,
+"x":     13,
+"count__":      1 
+},
+{
+ "cyl":      8,
+"x":     15,
+"count__":      7 
+},
+{
+ "cyl":      8,
+"x":     17,
+"count__":      2 
+},
+{
+ "cyl":      8,
+"x":     19,
+"count__":      2 
+},
+{
+ "cyl":      8,
+"x":     21,
+"count__":      0 
+} 
+] 
+} 
+] 
+} 
+},
+{
+ "name": "mtcars_a63c70e73b58d0823ab3bcbd3b543d6f_split_b7c6bb50_bin_34e66ab4",
+"source": "mtcars_a63c70e73b58d0823ab3bcbd3b543d6f_split_b7c6bb50_bin_34e66ab4_tree",
+"transform": [
+ {
+ "type": "flatten" 
+} 
+] 
+} 
+],
+"scales": [
+ {
+ "name": "stroke",
+"type": "linear",
+"reverse": false,
+"round": false,
+"clamp": false,
+"nice": true,
+"zero": false,
+"range": [ "#132B43", "#56B1F7" ],
+"domain": {
+ "fields": [
+ {
+ "data": "mtcars_a63c70e73b58d0823ab3bcbd3b543d6f_split_b7c6bb50_bin_34e66ab4",
+"field": "data.cyl" 
+} 
+] 
+} 
+},
+{
+ "name": "x",
+"type": "linear",
+"reverse": false,
+"round": false,
+"clamp": false,
+"nice": true,
+"zero": false,
+"range": "width",
+"domain": {
+ "fields": [
+ {
+ "data": "mtcars_a63c70e73b58d0823ab3bcbd3b543d6f_split_b7c6bb50_bin_34e66ab4",
+"field": "data.x" 
+} 
+] 
+} 
+},
+{
+ "name": "y",
+"type": "linear",
+"reverse": false,
+"round": false,
+"clamp": false,
+"nice": true,
+"zero": false,
+"range": "height",
+"domain": {
+ "fields": [
+ {
+ "data": "mtcars_a63c70e73b58d0823ab3bcbd3b543d6f_split_b7c6bb50_bin_34e66ab4",
+"field": "data.count__" 
+} 
+] 
+} 
+} 
+],
+"marks": [
+ {
+ "type": "group",
+"from": {
+ "data": "mtcars_a63c70e73b58d0823ab3bcbd3b543d6f_split_b7c6bb50_bin_34e66ab4_tree" 
+},
+"marks": [
+ {
+ "type": "line",
+"properties": {
+ "update": {
+ "stroke": {
+ "scale": "stroke",
+"field": "data.cyl" 
+},
+"strokeWidth": {
+ "value":      4 
+},
+"x": {
+ "scale": "x",
+"field": "data.x" 
+},
+"y": {
+ "scale": "y",
+"field": "data.count__" 
+} 
+},
+"ggvis": {
+ "data": {
+ "value": "mtcars_a63c70e73b58d0823ab3bcbd3b543d6f_split_b7c6bb50_bin_34e66ab4_tree" 
+} 
+} 
+} 
+} 
+] 
+} 
+],
+"width":    600,
+"height":    400,
+"legends": [
+ {
+ "stroke": "stroke",
+"orient": "right",
+"title": "cyl" 
+} 
+],
+"axes": [
+ {
+ "type": "x",
+"scale": "x",
+"orient": "bottom",
+"layer": "back",
+"grid": true,
+"title": "x" 
+},
+{
+ "type": "y",
+"scale": "y",
+"orient": "left",
+"layer": "back",
+"grid": true,
+"title": "count__" 
+} 
+],
+"padding": null,
+"ggvis_opts": {
+ "width":    600,
+"height":    400,
+"keep_aspect": false,
+"resizable": true,
+"padding": {},
+"duration":    250,
+"renderer": "svg",
+"hover_duration":      0 
+},
+"handlers": [] 
+},
+"id": "chart2acc54d075ce" 
+}
+    var myApp = angular.module('myApp', ['ui.ace', 'lodash'], 
+      function($locationProvider){
+        $locationProvider.html5Mode(true);
+      }
+    )
+      
+    // parse a spec and create a visualization view
+    function parse(spec) {
+      return vg.parse.spec(spec, function(chart){
+        chart({el:'#vis'}).update(); 
+      })
+    }
+    
+    
+    myApp.controller('MainCtrl', function($scope, $http, $location){  
+      $scope.preview = true
+      $scope.exampleCode = js_beautify(JSON.stringify(params.spec))
+      
+      $scope.aceOptions = {
+        theme: 'solarized_light',
+        mode: 'json',
+        useWrapMode : true
+      }
+      
+      $scope.parseSpec = function(){
+        parse(JSON.parse($scope.exampleCode))
+      }
+      
+      $scope.$watch('exampleCode', _.debounce(function(newCode){
+        $scope.exampleCode = newCode
+        if ($scope.preview){
+          $scope.parseSpec()
+        }
+      }, 3000))
+    })
+   </script>
+    
+    
+      <script>
+      </script>     
+          
+  </body>
+</html>

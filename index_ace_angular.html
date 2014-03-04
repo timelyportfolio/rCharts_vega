@@ -66,7 +66,7 @@
     </li>
     <li>
          <button href="#" class='uk-button uk-button-danger' 
-          style='margin-left:5px; margin-top:5px; margin-right:5px;' ng-click='slidifyText()'>
+          style='margin-left:5px; margin-top:5px; margin-right:5px;' ng-click='parseSpec()'>
            Submit
           </button>
     </li>
@@ -135,8 +135,8 @@ myApp.controller('MainCtrl', function($scope, $http, $location){
     url: './playground/examples/spec.json'
   }).success(function(result){
     $scope.files = ['spec.json']
-    $scope.examples = ['example1']
-    $scope.example = $scope.examples[0]//[$scope.n()]
+    $scope.examples = [{title:'example1'},{title:'example2'}]
+    $scope.example = 0//[$scope.n()]
     $scope.exampleCode = js_beautify(JSON.stringify(result))
   })
   
@@ -146,7 +146,7 @@ myApp.controller('MainCtrl', function($scope, $http, $location){
      useWrapMode : true
    }
    
-   $scope.slidifyText = function(){
+   $scope.parseSpec = function(){
      $("#download").hide()
      parse(JSON.parse($scope.exampleCode))
    }
@@ -154,7 +154,7 @@ myApp.controller('MainCtrl', function($scope, $http, $location){
    $scope.$watch('exampleCode', _.debounce(function(newCode){
      $scope.exampleCode = newCode
      if ($scope.preview){
-       $scope.slidifyText()
+       $scope.parseSpec()
      }
    }, 3000))
    
