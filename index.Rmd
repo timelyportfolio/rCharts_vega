@@ -1,0 +1,85 @@
+---
+title: Surprising Alpha | rCharts Analysis
+lead: Quick Bar Plots Using nvd3 and dimple
+framework: pure
+mode     : selfcontained # {standalone, draft}
+highlighter: prettify
+hitheme: twitter-bootstrap
+assets:
+  css:
+    - http://yui.yahooapis.com/pure/0.4.2/pure-min.css
+    - http://purecss.io/combo/1.11.2?/css/main-grid.css&/css/main.css&/css/home.css&/css/rainbow/baby-blue.css
+    - http://fonts.googleapis.com/css?family=Roboto:300,400
+    - http://fonts.googleapis.com/css?family=Oxygen:300
+---
+
+```{r echo = F, warning=F, error=F, message=F}
+knitr::opts_chunk$set(
+  warning=F,
+  error=F,
+  message=F,
+  fig.width = 10,
+  fig.height = 8,
+  results='asis',
+  cache = F,
+  tidy = F
+)
+```
+
+```{r "requires"}
+require(ggvis)
+require(dplyr)
+require(shiny) #need shiny isolate function for as.vega
+
+#build a rCharts wrapper
+require(rCharts)
+options( viewer=NULL )
+```
+
+```{r "rChartsWrapper"}
+rCharts_vega <- setRefClass(
+  "rCharts_vega",
+  contains = "rCharts",
+  methods = list(
+    initialize = function(){
+      callSuper(); 
+    },
+    getPayload = function(chartId){
+      list(
+        chartParams = RJSONIO::toJSON(params),
+        chartId = chartId,
+        lib = basename(lib), 
+        liburl = LIB$url
+      )
+    })
+)
+
+vPlot <- rCharts_vega$new()
+vPlot$setLib( "." )
+vPlot$templates$script = "./chart_vega.html"
+vPlot$set(
+  bodyattrs = "ng-app='myApp' ng-controller='MainCtrl'"
+)
+vPlot$setTemplate(
+  chartDiv = "<div></div>"
+)
+vPlot$setTemplate(
+  afterScript = "
+  <script>
+  </script>     
+  "
+)
+```
+
+```{r "vega_example"}
+# with examples from help/library/ggvis/doc/cookbook.html
+# Scatterplots Example 3
+
+vPlot$params$spec <- mtcars %>% 
+  ggvis(~wt, ~mpg) %>%
+  layer_points() %>%
+  layer_smooths() %>%
+  ggvis:::as.vega()
+vPlot$show("inline",cdn=F)
+```
+

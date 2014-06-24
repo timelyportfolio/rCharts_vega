@@ -16,3 +16,13 @@
   margin: 0;
   z-index: 10;
 }
+
+
+.header h1,h2,h3 {
+  font-family: "Roboto", sans-serif;  
+}
+
+
+body, p {
+  font-family: "Oxygen", sans-serif;
+}
