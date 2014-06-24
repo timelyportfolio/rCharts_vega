@@ -1,73 +1,73 @@
-    <nav class="uk-navbar">
-      <ul class="uk-navbar-nav">
-     <li>
-      <!--a href="/index.html"-->
-         
-        <i class='uk-icon-home'> </i>Home
-      <!--/a-->
-    </li>
-    <li>
-         <button href="#" class='uk-button uk-button-danger' 
-          style='margin-left:5px; margin-top:5px; margin-right:5px;' ng-click='parseSpec()'>
-           Submit
-          </button>
-    </li>
-    <li>
-      <div class='uk-button uk-button-success' 
-        style='margin-left:5px; margin-top:5px; margin-right:5px;'>
-      Instant Preview
-      <input id="checkSlave" type="checkbox" ng-model="preview">
-     </div>
-    </li>
-  </ul>
-    </nav>
-        <div class="uk-grid">
-  <div id='editor' ng-model='exampleCode' ui-ace="aceOptions">{{ exampleCode }}
-  </div><br/>
-   <div id='vis'>
+<nav class="uk-navbar">
+  <ul class="uk-navbar-nav">
+ <li>
+  <!--a href="/index.html"-->
      
-   </div>
-   
-   <script>
-    var lodash = angular.module('lodash', []);
-    lodash.factory('_', function () {
-      return window._;
-      });
-    
-    var params = {{{ chartParams }}}
-    var myApp = angular.module('myApp', ['ui.ace', 'lodash'], 
-      function($locationProvider){
-        $locationProvider.html5Mode(true);
-      }
-    )
-      
-    // parse a spec and create a visualization view
-    function parse(spec) {
-      return vg.parse.spec(spec, function(chart){
-        chart({el:'#vis'}).update(); 
-      })
+    <i class='uk-icon-home'> </i>Home
+  <!--/a-->
+</li>
+<li>
+     <button href="#" class='uk-button uk-button-danger' 
+      style='margin-left:5px; margin-top:5px; margin-right:5px;' ng-click='parseSpec()'>
+       Submit
+      </button>
+</li>
+<li>
+  <div class='uk-button uk-button-success' 
+    style='margin-left:5px; margin-top:5px; margin-right:5px;'>
+  Instant Preview
+  <input id="checkSlave" type="checkbox" ng-model="preview">
+ </div>
+</li>
+</ul>
+</nav>
+    <div class="uk-grid">
+<div id='editor' ng-model='exampleCode' ui-ace="aceOptions">{{ exampleCode }}
+</div><br/>
+<div id='vis'>
+ 
+</div>
+
+<script>
+var lodash = angular.module('lodash', []);
+lodash.factory('_', function () {
+  return window._;
+  });
+
+var params = {{{ chartParams }}}
+var myApp = angular.module('myApp', ['ui.ace', 'lodash'], 
+  function($locationProvider){
+    $locationProvider.html5Mode(true);
+  }
+)
+  
+// parse a spec and create a visualization view
+function parse(spec) {
+  return vg.parse.spec(spec, function(chart){
+    chart({el:'#vis'}).update(); 
+  })
+}
+
+
+myApp.controller('MainCtrl', function($scope, $http, $location){  
+  $scope.preview = true
+  $scope.exampleCode = js_beautify(JSON.stringify(params.spec))
+  
+  $scope.aceOptions = {
+    theme: 'solarized_light',
+    mode: 'json',
+    useWrapMode : true
+  }
+  
+  $scope.parseSpec = function(){
+    parse(JSON.parse($scope.exampleCode))
+  }
+  
+  $scope.$watch('exampleCode', _.debounce(function(newCode){
+    $scope.exampleCode = newCode
+    if ($scope.preview){
+      $scope.parseSpec()
     }
-    
-    
-    myApp.controller('MainCtrl', function($scope, $http, $location){  
-      $scope.preview = true
-      $scope.exampleCode = js_beautify(JSON.stringify(params.spec))
-      
-      $scope.aceOptions = {
-        theme: 'solarized_light',
-        mode: 'json',
-        useWrapMode : true
-      }
-      
-      $scope.parseSpec = function(){
-        parse(JSON.parse($scope.exampleCode))
-      }
-      
-      $scope.$watch('exampleCode', _.debounce(function(newCode){
-        $scope.exampleCode = newCode
-        if ($scope.preview){
-          $scope.parseSpec()
-        }
-      }, 3000))
-    })
-   </script>
+  }, 3000))
+})
+</script>

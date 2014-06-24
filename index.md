@@ -1,19 +1,59 @@
 ---
-title: Surprising Alpha | rCharts Analysis
-lead: Quick Bar Plots Using nvd3 and dimple
-framework: pure
+title: rCharts Peeks Under the Hood of ggvis
+subtitle: Get a Better Understanding of ggvis + vega
+framework: bootstrap
 mode     : selfcontained # {standalone, draft}
 highlighter: prettify
 hitheme: twitter-bootstrap
 assets:
   css:
-    - http://yui.yahooapis.com/pure/0.4.2/pure-min.css
-    - http://purecss.io/combo/1.11.2?/css/main-grid.css&/css/main.css&/css/home.css&/css/rainbow/baby-blue.css
+    - http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css
     - http://fonts.googleapis.com/css?family=Roboto:300,400
     - http://fonts.googleapis.com/css?family=Oxygen:300
+
+---    
+
+<style>
+body{
+  font-family: 'Oxygen', sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+h1,h2,h3,h4 {
+font-family: 'Raleway', sans-serif;
+}
+
+.container { width: 1000px; }
+
+h3 {
+background-color: #D4DAEC;
+  text-indent: 100px; 
+}
+
+h4 {
+text-indent: 100px;
+}
+</style>
+
+
+
+<div class="page-header">
+  <h1>{{ page.title }}</h1>
+  <h3>{{ page.subtitle }}</h3>
+</div>
+
+I have enjoyed watching the development of [`ggvis`](http://github.com/rstudio/ggvis).  A while back I wanted to understand the inner workings of `ggvis`, so I hacked together a combination of [Vega Live Editor](http://trifacta.github.io/vega/editor/), [`rCharts`](http://rcharts.io), and [Ramnath Vaidyanathan's Live `rCharts` editor](http://ramnathv.github.io/posts/making-rcharts-live-app/index.html) to play with the underlying `ggvis` spec.  Now that `ggvis` has reached a level of maturity for it to [reach CRAN](http://blog.rstudio.org/2014/06/23/introducing-ggvis/), I thought it might be helpful to share the interactive playground using Scatterplot Example 3 from the [`ggvis` cookbook](http://ggvis.rstudio.com/cookbook.html).
+
+You can run all of the examples in the playground from the [`ggvis` cookbook](http://ggvis.rstudio.com/cookbook.html) with this [code.R](https://github.com/timelyportfolio/rCharts_vega/blob/gh-pages/code.r).
+
 ---
+<div class="col-md-12">
+  <iframe src = "vega_example.html" width = 100% height = 800px></iframe>
+<div>
 
-
+---
+### Load All of Our Packages
 
 
 ```r
@@ -26,6 +66,8 @@ require(rCharts)
 options( viewer=NULL )
 ```
 
+---
+### Build an rCharts Wrapper
 
 ```r
 rCharts_vega <- setRefClass(
@@ -62,264 +104,21 @@ vPlot$setTemplate(
 )
 ```
 
+---
+### Scatterplots Example 3
+
 
 ```r
 # with examples from help/library/ggvis/doc/cookbook.html
-# Scatterplots Example 3
 
 vPlot$params$spec <- mtcars %>% 
   ggvis(~wt, ~mpg) %>%
   layer_points() %>%
   layer_smooths() %>%
   ggvis:::as.vega()
-vPlot$show("inline",cdn=F)
+vPlot
 ```
 
 
-<div></div>
-    <nav class="uk-navbar">
-      <ul class="uk-navbar-nav">
-     <li>
-      <!--a href="/index.html"-->
-         
-        <i class='uk-icon-home'> </i>Home
-      <!--/a-->
-    </li>
-    <li>
-         <button href="#" class='uk-button uk-button-danger' 
-          style='margin-left:5px; margin-top:5px; margin-right:5px;' ng-click='parseSpec()'>
-           Submit
-          </button>
-    </li>
-    <li>
-      <div class='uk-button uk-button-success' 
-        style='margin-left:5px; margin-top:5px; margin-right:5px;'>
-      Instant Preview
-      <input id="checkSlave" type="checkbox" ng-model="preview">
-     </div>
-    </li>
-  </ul>
-    </nav>
-        <div class="uk-grid">
-  <div id='editor' ng-model='exampleCode' ui-ace="aceOptions">
-  </div><br/>
-   <div id='vis'>
-     
-   </div>
-   
-   <script>
-    var lodash = angular.module('lodash', []);
-    lodash.factory('_', function () {
-      return window._;
-      });
-    
-    var params = {
- "dom": "chart197447687443",
-"width":    800,
-"height":    400,
-"bodyattrs": "ng-app='myApp' ng-controller='MainCtrl'",
-"spec": {
- "data": [
- {
- "name": "mtcars0",
-"format": {
- "type": "csv",
-"parse": {
- "wt": "number",
-"mpg": "number" 
-} 
-},
-"values": "\"wt\",\"mpg\"\n2.62,21\n2.875,21\n2.32,22.8\n3.215,21.4\n3.44,18.7\n3.46,18.1\n3.57,14.3\n3.19,24.4\n3.15,22.8\n3.44,19.2\n3.44,17.8\n4.07,16.4\n3.73,17.3\n3.78,15.2\n5.25,10.4\n5.424,10.4\n5.345,14.7\n2.2,32.4\n1.615,30.4\n1.835,33.9\n2.465,21.5\n3.52,15.5\n3.435,15.2\n3.84,13.3\n3.845,19.2\n1.935,27.3\n2.14,26\n1.513,30.4\n3.17,15.8\n2.77,19.7\n3.57,15\n2.78,21.4" 
-},
-{
- "name": "mtcars0/smooth1",
-"format": {
- "type": "csv",
-"parse": {
- "pred_": "number",
-"resp_": "number" 
-} 
-},
-"values": "\"pred_\",\"resp_\"\n1.513,32.08897233857\n1.56250632911392,31.6878645869701\n1.61201265822785,31.2816303797919\n1.66151898734177,30.8703709543688\n1.7110253164557,30.4541875480347\n1.76053164556962,30.0331813981232\n1.81003797468354,29.6074537419678\n1.85954430379747,29.1771058169022\n1.90905063291139,28.7422388602601\n1.95855696202532,28.3001719301537\n2.00806329113924,27.834621969428\n2.05756962025316,27.3476575600419\n2.10707594936709,26.84497968394\n2.15658227848101,26.3322893230667\n2.20608860759494,25.8152874593666\n2.25559493670886,25.2996750747841\n2.30510126582278,24.7911531512637\n2.35460759493671,24.29542267075\n2.40411392405063,23.8181846151875\n2.45362025316456,23.3651399665205\n2.50312658227848,22.955253039598\n2.55263291139241,22.6138488714952\n2.60213924050633,22.3275852300224\n2.65164556962025,22.0817586181852\n2.70115189873418,21.8616655389892\n2.7506582278481,21.65260249544\n2.80016455696203,21.4398659905432\n2.84967088607595,21.2087525273044\n2.89917721518987,20.953335722037\n2.9486835443038,20.7158424594628\n2.99818987341772,20.4957065225374\n3.04769620253165,20.2829337645837\n3.09720253164557,20.0675300389245\n3.14670886075949,19.8395011988825\n3.19621518987342,19.5888530977805\n3.24572151898734,19.2971559094315\n3.29522784810127,18.9444093670088\n3.34473417721519,18.5670026794964\n3.39424050632911,18.2056968860288\n3.44374683544304,17.9009022641924\n3.49325316455696,17.620602502374\n3.54275949367089,17.3400153015964\n3.59226582278481,17.079077805285\n3.64177215189873,16.8175887231322\n3.69127848101266,16.5575726926136\n3.74078481012658,16.3083303048321\n3.79029113924051,16.0791621508901\n3.83979746835443,15.8793688218903\n3.88930379746835,15.7018119854881\n3.93881012658228,15.5259429561214\n3.9883164556962,15.3517253848296\n4.03782278481013,15.1793328075288\n4.08732911392405,15.0089387601353\n4.13683544303798,14.8407167785652\n4.1863417721519,14.6748403987346\n4.23584810126582,14.5114831565596\n4.28535443037975,14.3508185879563\n4.33486075949367,14.193020228841\n4.3843670886076,14.0382616151298\n4.43387341772152,13.8867162827388\n4.48337974683544,13.7385577675841\n4.53288607594937,13.5939596055819\n4.58239240506329,13.4530953326483\n4.63189873417722,13.3161384846995\n4.68140506329114,13.1832625976516\n4.73091139240506,13.0546412074207\n4.78041772151899,12.930447849923\n4.82992405063291,12.8108560610747\n4.87943037974684,12.6960393767918\n4.92893670886076,12.5861713329905\n4.97844303797468,12.4814254655869\n5.02794936708861,12.3819753104973\n5.07745569620253,12.2879944036376\n5.12696202531646,12.1996562809241\n5.17646835443038,12.117134478273\n5.2259746835443,12.0406025316002\n5.27548101265823,11.9702339768221\n5.32498734177215,11.9062023498547\n5.37449367088608,11.8486811866141\n5.424,11.7978440230166" 
-},
-{
- "name": "scale/x",
-"format": {
- "type": "csv",
-"parse": {
- "domain": "number" 
-} 
-},
-"values": "\"domain\"\n1.31745\n5.61955" 
-},
-{
- "name": "scale/y",
-"format": {
- "type": "csv",
-"parse": {
- "domain": "number" 
-} 
-},
-"values": "\"domain\"\n9.225\n35.075" 
-} 
-],
-"scales": [
- {
- "name": "x",
-"domain": {
- "data": "scale/x",
-"field": "data.domain" 
-},
-"zero": false,
-"nice": false,
-"clamp": false,
-"range": "width" 
-},
-{
- "name": "y",
-"domain": {
- "data": "scale/y",
-"field": "data.domain" 
-},
-"zero": false,
-"nice": false,
-"clamp": false,
-"range": "height" 
-} 
-],
-"marks": [
- {
- "type": "symbol",
-"properties": {
- "update": {
- "fill": {
- "value": "#000000" 
-},
-"size": {
- "value":     50 
-},
-"x": {
- "scale": "x",
-"field": "data.wt" 
-},
-"y": {
- "scale": "y",
-"field": "data.mpg" 
-} 
-},
-"ggvis": {
- "data": {
- "value": "mtcars0" 
-} 
-} 
-},
-"from": {
- "data": "mtcars0" 
-} 
-},
-{
- "type": "line",
-"properties": {
- "update": {
- "stroke": {
- "value": "#000000" 
-},
-"strokeWidth": {
- "value":      2 
-},
-"x": {
- "scale": "x",
-"field": "data.pred_" 
-},
-"y": {
- "scale": "y",
-"field": "data.resp_" 
-},
-"fill": {
- "value": "transparent" 
-} 
-},
-"ggvis": {
- "data": {
- "value": "mtcars0/smooth1" 
-} 
-} 
-},
-"from": {
- "data": "mtcars0/smooth1" 
-} 
-} 
-],
-"width":    600,
-"height":    400,
-"legends": [],
-"axes": [
- {
- "type": "x",
-"scale": "x",
-"orient": "bottom",
-"layer": "back",
-"grid": true,
-"title": "wt" 
-},
-{
- "type": "y",
-"scale": "y",
-"orient": "left",
-"layer": "back",
-"grid": true,
-"title": "mpg" 
-} 
-],
-"padding": null,
-"ggvis_opts": {
- "width":    600,
-"height":    400,
-"keep_aspect": false,
-"resizable": true,
-"padding": {},
-"duration":    250,
-"renderer": "svg",
-"hover_duration":      0 
-},
-"handlers": null 
-},
-"id": "chart197447687443" 
-}
-    var myApp = angular.module('myApp', ['ui.ace', 'lodash'], 
-      function($locationProvider){
-        $locationProvider.html5Mode(true);
-      }
-    )
-      
-    // parse a spec and create a visualization view
-    function parse(spec) {
-      return vg.parse.spec(spec, function(chart){
-        chart({el:'#vis'}).update(); 
-      })
-    }
-    
-    
-    myApp.controller('MainCtrl', function($scope, $http, $location){  
-      $scope.preview = true
-      $scope.exampleCode = js_beautify(JSON.stringify(params.spec))
-      
-      $scope.aceOptions = {
-        theme: 'solarized_light',
-        mode: 'json',
-        useWrapMode : true
-      }
-      
-      $scope.parseSpec = function(){
-        parse(JSON.parse($scope.exampleCode))
-      }
-      
-      $scope.$watch('exampleCode', _.debounce(function(newCode){
-        $scope.exampleCode = newCode
-        if ($scope.preview){
-          $scope.parseSpec()
-        }
-      }, 3000))
-    })
-   </script>
+
 

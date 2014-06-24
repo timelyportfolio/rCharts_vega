@@ -17,3 +17,22 @@ rCharts_vega:
     - ./js/beautify.js
     - ./js/d3.v3.js
     - ./js/vega.js
+  cdn:
+    css:
+      - libraries/frameworks/uikit/css/uikit.min.css
+      - libraries/frameworks/uikit/css/docs.css
+      - css/googleopensans.css
+      - libraries/frameworks/uikit/css/index.css
+      - libraries/frameworks/uikit/css/jumbotron.css
+      - libraries/highlighters/highlight.js/css/solarized_dark.css
+      - css/local.css
+    jshead:
+      - js/jquery.min.js
+      - libraries/frameworks/uikit/js/uikit.min.js
+      - js/angular.min.js
+      - js/ace.js
+      - js/ui-ace.min.js
+      - js/lodash.js
+      - js/beautify.js
+      - js/d3.v3.js
+      - js/vega.js
