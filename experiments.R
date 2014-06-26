@@ -1,25 +1,13 @@
-#do load_all instead of require
-#so we have access to the internal functions of ggvis
-setwd("C:/Users/Kent.TLEAVELL_NT/Dropbox/development/r/ggvis")
-require(devtools)
-load_all()
-#need shiny isolate function for as.vega
+require(ggvis)
+#need shiny isolate function for ggvis:::as.vega
 require(shiny)
 
 setwd("C:/Users/Kent.TLEAVELL_NT/Dropbox/development/r/rCharts_vega")
 
-g1 <- ggvis(
-  mtcars,
-  props(
-    x = ~mpg,
-    stroke = ~cyl,
-    strokeWidth := 4
-  ),
-  by_group(cyl),
-  layer_freqpoly(binwidth = 2)
-)
+g1 <- mtcars %>% ggvis(~mpg, stroke = ~factor(cyl), strokeWidth:=2) %>% group_by(cyl) %>%
+  layer_freqpolys(binwidth = 2)
 
-vega_spec <- as.vega(g1)
+vega_spec <- ggvis:::as.vega(g1)
 
 
 require(rCharts)
@@ -66,7 +54,7 @@ rGG$set(
   bodyattrs = "ng-app ng-controller='rChartsCtrl'"
 )
 rGG$set(
-  spec = as.vega(g1)
+  spec = ggvis:::as.vega(g1)
 )
 #rGG$addAssets(
 #  jshead = "http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.1/angular.min.js"

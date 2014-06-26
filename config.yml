@@ -14,9 +14,11 @@ rCharts_vega:
     - ./js/ace.js
     - ./js/ui-ace.min.js
     - ./js/lodash.js
+    - ./js/lodash_load.js
     - ./js/beautify.js
     - ./js/d3.v3.js
     - ./js/vega.js
+    - ./js/ggvis.js
   cdn:
     css:
       - libraries/frameworks/uikit/css/uikit.min.css
@@ -33,6 +35,8 @@ rCharts_vega:
       - js/ace.js
       - js/ui-ace.min.js
       - js/lodash.js
+      - js/lodash_load.js
       - js/beautify.js
       - js/d3.v3.js
       - js/vega.js
+      - js/ggvis.js
